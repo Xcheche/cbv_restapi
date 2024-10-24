@@ -18,9 +18,29 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import include, path
 from django.views.generic import RedirectView
+from drf_yasg import openapi
+from drf_yasg.views import get_schema_view
+
+# swagger
+schema_view = get_schema_view(
+    openapi.Info(
+        title="Student CRUD API",
+        default_version="1.0.0",
+        description="Demo",
+        terms_of_service="https://www.google.com/policies/terms/",
+        contact=openapi.Contact(email="CnJrQ@example.com"),
+        license=openapi.License(name="BSD License"),
+    ),
+    public=True,
+)
 
 urlpatterns = [
     path("admin/", admin.site.urls),
     path("cbvapp/", include("cbvapp.urls")),
     path("", RedirectView.as_view(url="cbvapp/")),
+    path(
+        "swagger/schema/",
+        schema_view.with_ui("swagger", cache_timeout=0),
+        name="schema-swagger-schema",
+    ),
 ]
